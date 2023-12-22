@@ -2,33 +2,40 @@ package pl.patrykjava.game;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.utils.ScreenUtils;
 
 /** {@link com.badlogic.gdx.ApplicationListener} implementation shared by all platforms. */
 public class Main extends ApplicationAdapter {
-    private SpriteBatch batch;
-    private Texture image;
+    SpriteBatch batch;
+    Texture img;
+    Texture bullet;
+    Player player;
 
     @Override
-    public void create() {
+    public void create () {
         batch = new SpriteBatch();
-        image = new Texture("libgdx.png");
+        img = new Texture("ship.png");
+        bullet = new Texture("fire.png");
+        player = new Player(img, bullet);
     }
 
     @Override
-    public void render() {
-        Gdx.gl.glClearColor(0.15f, 0.15f, 0.2f, 1f);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+    public void render () {
+        float deltaTime = Gdx.graphics.getDeltaTime();
+
+        ScreenUtils.clear(0, 0, 0, 1);
+
         batch.begin();
-        batch.draw(image, 140, 210);
+        player.Update(deltaTime);
+        player.Draw(batch);
         batch.end();
     }
 
     @Override
-    public void dispose() {
+    public void dispose () {
         batch.dispose();
-        image.dispose();
+        img.dispose();
     }
 }
